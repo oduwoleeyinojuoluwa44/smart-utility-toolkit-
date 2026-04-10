@@ -17,6 +17,9 @@ export function ConversionResultCard({ result, fromUnit, toUnit }: ConversionRes
     <AppCard style={styles.card}>
       <Text style={styles.label}>Converted result</Text>
       <Text style={styles.result}>{result === null ? '--' : formatNumber(result, 4)}</Text>
+      <Text style={styles.supporting}>
+        {result === null ? 'Pick units and enter a value to see the live result.' : 'Updated instantly as you change values.'}
+      </Text>
       <View style={styles.metaRow}>
         <Text style={styles.meta}>{fromUnit?.label ?? 'Choose source unit'}</Text>
         <Text style={styles.arrow}>→</Text>
@@ -45,6 +48,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: theme.spacing.sm,
     alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  supporting: {
+    color: '#DBEAFE',
+    fontSize: theme.typography.sizes.sm,
   },
   meta: {
     color: '#DBEAFE',

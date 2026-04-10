@@ -34,7 +34,11 @@ const iconMap: Record<keyof RootTabParamList, keyof typeof Ionicons.glyphMap> = 
   BMI: 'barbell-outline',
 };
 
-export function AppNavigator() {
+type AppNavigatorProps = {
+  onResetOnboarding: () => Promise<void>;
+};
+
+export function AppNavigator({ onResetOnboarding }: AppNavigatorProps) {
   return (
     <NavigationContainer theme={navigationTheme}>
       <Tab.Navigator
@@ -59,8 +63,12 @@ export function AppNavigator() {
         })}
       >
         <Tab.Screen name="Converter" component={ConverterScreen} />
-        <Tab.Screen name="Notes" component={NotesScreen} />
-        <Tab.Screen name="BMI" component={BMIScreen} />
+        <Tab.Screen name="Notes">
+          {() => <NotesScreen onResetOnboarding={onResetOnboarding} />}
+        </Tab.Screen>
+        <Tab.Screen name="BMI">
+          {() => <BMIScreen onResetOnboarding={onResetOnboarding} />}
+        </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -14,6 +14,7 @@ export function Screen({ children, scroll = true, contentContainerStyle, style }
   const content = scroll ? (
     <ScrollView
       contentContainerStyle={[styles.scrollContent, contentContainerStyle]}
+      keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
       {children}
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: theme.spacing.xl,
+    paddingBottom: theme.spacing.xxxl + 72,
     gap: theme.spacing.lg,
   },
 });

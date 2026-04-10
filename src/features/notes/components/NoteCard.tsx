@@ -16,6 +16,9 @@ export function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
   return (
     <AppCard style={styles.card}>
       <Pressable onPress={() => onEdit(note)} style={styles.content}>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>Quick note</Text>
+        </View>
         <Text style={styles.title}>{note.title || 'Untitled note'}</Text>
         <Text style={styles.body} numberOfLines={3}>
           {note.content || 'No additional content.'}
@@ -39,9 +42,22 @@ export function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
 const styles = StyleSheet.create({
   card: {
     gap: theme.spacing.lg,
+    borderColor: '#DCE6F4',
   },
   content: {
     gap: theme.spacing.sm,
+  },
+  badge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: 6,
+    borderRadius: theme.radius.pill,
+    backgroundColor: '#EEF4FF',
+  },
+  badgeText: {
+    color: theme.colors.primary,
+    fontSize: theme.typography.sizes.xs,
+    fontWeight: theme.typography.weights.semibold,
   },
   title: {
     fontSize: theme.typography.sizes.lg,

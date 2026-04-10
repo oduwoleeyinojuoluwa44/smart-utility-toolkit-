@@ -27,7 +27,7 @@ export function BMIResultCard({ result }: BMIResultCardProps) {
   const palette = getPalette(result?.category);
 
   return (
-    <AppCard style={styles.card}>
+    <AppCard style={[styles.card, result && styles.activeCard]}>
       <Text style={styles.label}>BMI result</Text>
       <Text style={styles.score}>{result ? result.score.toFixed(1) : '--'}</Text>
       <View style={[styles.badge, { backgroundColor: palette.bg }]}>
@@ -43,6 +43,9 @@ export function BMIResultCard({ result }: BMIResultCardProps) {
 const styles = StyleSheet.create({
   card: {
     gap: theme.spacing.sm,
+  },
+  activeCard: {
+    borderColor: '#E9D3AF',
   },
   label: {
     fontSize: theme.typography.sizes.sm,

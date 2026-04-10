@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { AppCard } from '../../../shared/components/AppCard';
 import { AppHeader } from '../../../shared/components/AppHeader';
@@ -35,8 +35,24 @@ export function ConverterScreen() {
     <Screen>
       <AppHeader
         title="Smart Utility Toolkit"
-        subtitle="Convert essential units quickly with a clean, distraction-free workflow."
+        subtitle="Fast everyday conversions with a fresher, touch-friendly workflow."
       />
+
+      <AppCard style={styles.heroCard}>
+        <View style={styles.heroRow}>
+          <View style={styles.heroTextWrap}>
+            <Text style={styles.heroEyebrow}>Converter spotlight</Text>
+            <Text style={styles.heroTitle}>Switch units in seconds</Text>
+            <Text style={styles.heroText}>
+              Move between length, temperature, and weight with instant feedback built for one-hand use.
+            </Text>
+          </View>
+          <View style={styles.heroBadge}>
+            <Text style={styles.heroBadgeNumber}>3</Text>
+            <Text style={styles.heroBadgeLabel}>Categories</Text>
+          </View>
+        </View>
+      </AppCard>
 
       <CategoryTabs activeCategory={category} labels={categoryLabels} onChange={changeCategory} />
 
@@ -68,6 +84,52 @@ export function ConverterScreen() {
 }
 
 const styles = StyleSheet.create({
+  heroCard: {
+    backgroundColor: '#E8F0FF',
+    borderColor: '#C9DBFF',
+  },
+  heroRow: {
+    flexDirection: 'row',
+    gap: theme.spacing.md,
+    alignItems: 'center',
+  },
+  heroTextWrap: {
+    flex: 1,
+    gap: theme.spacing.xs,
+  },
+  heroEyebrow: {
+    color: theme.colors.primary,
+    fontWeight: theme.typography.weights.semibold,
+    fontSize: theme.typography.sizes.sm,
+  },
+  heroTitle: {
+    color: theme.colors.text,
+    fontWeight: theme.typography.weights.bold,
+    fontSize: theme.typography.sizes.xl,
+  },
+  heroText: {
+    color: theme.colors.mutedText,
+    lineHeight: 21,
+  },
+  heroBadge: {
+    width: 78,
+    height: 78,
+    borderRadius: 24,
+    backgroundColor: theme.colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing.sm,
+  },
+  heroBadgeNumber: {
+    color: theme.colors.surface,
+    fontSize: 24,
+    fontWeight: theme.typography.weights.bold,
+  },
+  heroBadgeLabel: {
+    color: '#DBEAFE',
+    fontSize: theme.typography.sizes.xs,
+    textAlign: 'center',
+  },
   formCard: {
     gap: theme.spacing.lg,
   },

@@ -25,6 +25,7 @@ export function UnitPicker({ label, units, selectedValue, onChange }: UnitPicker
               style={[styles.pill, isActive && styles.activePill]}
             >
               <Text style={[styles.pillText, isActive && styles.activePillText]}>{unit.shortLabel}</Text>
+              <Text style={[styles.pillSubtext, isActive && styles.activePillSubtext]}>{unit.label}</Text>
             </Pressable>
           );
         })}
@@ -48,13 +49,19 @@ const styles = StyleSheet.create({
     gap: theme.spacing.sm,
   },
   pill: {
+    minWidth: 70,
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.sm,
-    borderRadius: theme.radius.pill,
+    borderRadius: theme.radius.md,
     backgroundColor: theme.colors.surfaceMuted,
+    borderWidth: 1,
+    borderColor: '#DCE6F4',
+    alignItems: 'center',
+    gap: 2,
   },
   activePill: {
     backgroundColor: theme.colors.primarySoft,
+    borderColor: '#A7C5FF',
   },
   pillText: {
     color: theme.colors.text,
@@ -63,5 +70,12 @@ const styles = StyleSheet.create({
   activePillText: {
     color: theme.colors.primary,
     fontWeight: theme.typography.weights.semibold,
+  },
+  pillSubtext: {
+    color: theme.colors.mutedText,
+    fontSize: theme.typography.sizes.xs,
+  },
+  activePillSubtext: {
+    color: theme.colors.primary,
   },
 });
