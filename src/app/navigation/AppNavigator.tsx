@@ -6,10 +6,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { ConverterScreen } from '../../features/converter/screens/ConverterScreen';
 import { NotesScreen } from '../../features/notes/screens/NotesScreen';
 import { BMIScreen } from '../../features/bmi/screens/BMIScreen';
+import { TasksScreen } from '../../features/tasks/screens/TasksScreen';
 import { theme } from '../../shared/theme';
 
 type RootTabParamList = {
   Converter: undefined;
+  Tasks: undefined;
   Notes: undefined;
   BMI: undefined;
 };
@@ -30,15 +32,12 @@ const navigationTheme = {
 
 const iconMap: Record<keyof RootTabParamList, keyof typeof Ionicons.glyphMap> = {
   Converter: 'swap-horizontal',
+  Tasks: 'checkbox-outline',
   Notes: 'document-text-outline',
   BMI: 'barbell-outline',
 };
 
-type AppNavigatorProps = {
-  onResetOnboarding: () => Promise<void>;
-};
-
-export function AppNavigator({ onResetOnboarding }: AppNavigatorProps) {
+export function AppNavigator() {
   return (
     <NavigationContainer theme={navigationTheme}>
       <Tab.Navigator
@@ -63,12 +62,9 @@ export function AppNavigator({ onResetOnboarding }: AppNavigatorProps) {
         })}
       >
         <Tab.Screen name="Converter" component={ConverterScreen} />
-        <Tab.Screen name="Notes">
-          {() => <NotesScreen onResetOnboarding={onResetOnboarding} />}
-        </Tab.Screen>
-        <Tab.Screen name="BMI">
-          {() => <BMIScreen onResetOnboarding={onResetOnboarding} />}
-        </Tab.Screen>
+        <Tab.Screen name="Tasks" component={TasksScreen} />
+        <Tab.Screen name="Notes" component={NotesScreen} />
+        <Tab.Screen name="BMI" component={BMIScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
