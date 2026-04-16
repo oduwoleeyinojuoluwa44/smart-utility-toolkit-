@@ -11,11 +11,7 @@ import { BMIForm } from '../components/BMIForm';
 import { BMIResultCard } from '../components/BMIResultCard';
 import { useBMI } from '../hooks/useBMI';
 
-type BMIScreenProps = {
-  onResetOnboarding?: () => Promise<void>;
-};
-
-export function BMIScreen({ onResetOnboarding }: BMIScreenProps) {
+export function BMIScreen() {
   const { height, weight, result, setHeight, setWeight } = useBMI();
 
   return (
@@ -44,9 +40,6 @@ export function BMIScreen({ onResetOnboarding }: BMIScreenProps) {
       <BMIResultCard result={result} />
       <BMIForm height={height} weight={weight} onChangeHeight={setHeight} onChangeWeight={setWeight} />
       <BMICategoryCard />
-      {onResetOnboarding ? (
-        <AppButton title="Show onboarding again" variant="secondary" onPress={() => void onResetOnboarding()} />
-      ) : null}
     </Screen>
   );
 }

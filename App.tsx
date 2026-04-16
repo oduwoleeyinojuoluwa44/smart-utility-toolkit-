@@ -29,11 +29,6 @@ export default function App() {
     setShowOnboarding(false);
   }, []);
 
-  const handleResetOnboarding = React.useCallback(async () => {
-    await AsyncStorage.removeItem(storageKeys.onboardingSeen);
-    setShowOnboarding(true);
-  }, []);
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
@@ -52,7 +47,7 @@ export default function App() {
         ) : showOnboarding ? (
           <OnboardingScreen onContinue={handleContinue} />
         ) : (
-          <AppNavigator onResetOnboarding={handleResetOnboarding} />
+          <AppNavigator />
         )}
       </SafeAreaProvider>
     </GestureHandlerRootView>

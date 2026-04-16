@@ -5,6 +5,8 @@ import { AppButton } from '../../../shared/components/AppButton';
 import { Screen } from '../../../shared/components/Screen';
 import { theme } from '../../../shared/theme';
 
+import { Ionicons } from '@expo/vector-icons';
+
 type OnboardingScreenProps = {
   onContinue: () => void;
 };
@@ -13,14 +15,22 @@ const highlights = [
   {
     title: 'Convert fast',
     message: 'Length, temperature, and weight conversions update instantly as you type.',
+    icon: 'swap-horizontal',
   },
   {
     title: 'Keep quick notes',
     message: 'Save important utility values and reminders even when you are offline.',
+    icon: 'document-text-outline',
   },
   {
     title: 'Track BMI',
     message: 'Use a simple calculator with clear health-range guidance and readable results.',
+    icon: 'barbell-outline',
+  },
+  {
+    title: 'Manage Tasks',
+    message: 'Stay productive with a clean checklist synced straight to your device.',
+    icon: 'checkbox-outline',
   },
 ];
 
@@ -42,7 +52,7 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
         </View>
         <View style={styles.previewMain}>
           <View style={styles.previewMetricCard}>
-            <Text style={styles.previewMetricValue}>3</Text>
+            <Text style={styles.previewMetricValue}>4</Text>
             <Text style={styles.previewMetricLabel}>Core tools</Text>
           </View>
           <View style={styles.previewBars}>
@@ -56,16 +66,18 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
       <View style={styles.highlights}>
         {highlights.map((item) => (
           <View key={item.title} style={styles.highlightCard}>
-            <Text style={styles.highlightTitle}>{item.title}</Text>
-            <Text style={styles.highlightMessage}>{item.message}</Text>
+            <View style={styles.highlightIcon}>
+              <Ionicons name={item.icon as any} size={24} color={theme.colors.primary} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.highlightTitle}>{item.title}</Text>
+              <Text style={styles.highlightMessage}>{item.message}</Text>
+            </View>
           </View>
         ))}
       </View>
 
       <AppButton title="Get started" onPress={onContinue} />
-      <Pressable onPress={onContinue}>
-        <Text style={styles.skip}>Skip intro</Text>
-      </Pressable>
     </Screen>
   );
 }
@@ -162,12 +174,22 @@ const styles = StyleSheet.create({
     gap: theme.spacing.md,
   },
   highlightCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.md,
     padding: theme.spacing.lg,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    gap: theme.spacing.xs,
+    gap: theme.spacing.md,
+  },
+  highlightIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: theme.colors.primarySoft,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   highlightTitle: {
     color: theme.colors.text,
