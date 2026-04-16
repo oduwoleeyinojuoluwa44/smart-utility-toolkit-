@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, TextInput, Pressable, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { AppCard } from '../../../shared/components/AppCard';
 import { AppButton } from '../../../shared/components/AppButton';
@@ -12,12 +13,22 @@ import { NotesEmptyState } from '../components/NotesEmptyState';
 import { useNotes } from '../hooks/useNotes';
 import { Note } from '../types';
 
-type NotesScreenProps = {
-  onResetOnboarding?: () => Promise<void>;
-};
-
-export function NotesScreen({ onResetOnboarding }: NotesScreenProps) {
-  const { notes, isLoading, saveNote, deleteNote } = useNotes();
+export function NotesScreen() {
+  const { 
+    notes, 
+    isLoading, 
+    searchQuery, 
+    setSearchQuery, 
+    showArchived, 
+    setShowArchived,
+    sortBy,
+    setSortBy,
+    saveNote, 
+    deleteNote,
+    toggleArchive,
+    togglePin
+  } = useNotes();
+  
   const [editorVisible, setEditorVisible] = useState(false);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
 
@@ -39,27 +50,50 @@ export function NotesScreen({ onResetOnboarding }: NotesScreenProps) {
   return (
     <Screen>
       <AppHeader
-        title="Notes"
-        subtitle="Capture quick reminders, utility values, and personal checklists even when you are offline."
+        title="Utility Toolkit"
+        subtitle="Manage your quick notes, calculations, and utility data."
       />
 
-      <AppCard style={styles.heroCard}>
-        <View style={styles.heroRow}>
-          <View style={styles.heroTextWrap}>
-            <Text style={styles.heroEyebrow}>Offline ready</Text>
-            <Text style={styles.heroTitle}>Your quick notes stay close</Text>
-            <Text style={styles.heroText}>
-              Jot down measurements, reminders, and utility details without leaving the app.
-            </Text>
-          </View>
-          <View style={styles.heroBadge}>
-            <Text style={styles.heroBadgeNumber}>{notes.length}</Text>
-            <Text style={styles.heroBadgeLabel}>Saved notes</Text>
-          </View>
-        </View>
-      </AppCard>
+      {/* Search Bar matching the design */}
+      <View style={styles.searchContainer}>
+        <Ionicons name="search-outline" size={20} color={theme.colors.mutedText} style={styles.searchIcon} />
+        <TextInput
+          placeholder="Search your notes..."
+          placeholderTextColor={theme.colors.mutedText}
+          style={styles.searchInput}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+      </View>
 
-      <AppButton title="Create a new note" onPress={openCreate} />
+      <View style={styles.controlsRow}>
+        <Text style={styles.sectionHeading}>
+          {showArchived ? 'Archive' : 'Recent Notes'}
+        </Text>
+        
+        <View style={styles.controlButtons}>
+          <Pressable 
+            onPress={() => setSortBy(sortBy === 'recent' ? 'oldest' : 'recent')} 
+            style={styles.iconButton}
+          >
+            <Ionicons 
+              name={sortBy === 'recent' ? "filter" : "filter-outline"} 
+              size={22} 
+              color={theme.colors.text} 
+            />
+          </Pressable>
+          <Pressable 
+            onPress={() => setShowArchived(!showArchived)} 
+            style={[styles.archiveToggle, showArchived && styles.archiveToggleActive]}
+          >
+            <Ionicons 
+              name={showArchived ? "journal" : "archive-outline"} 
+              size={22} 
+              color={showArchived ? theme.colors.primary : theme.colors.text} 
+            />
+          </Pressable>
+        </View>
+      </View>
 
       {isLoading ? (
         <View style={styles.loaderWrap}>
@@ -68,14 +102,23 @@ export function NotesScreen({ onResetOnboarding }: NotesScreenProps) {
       ) : notes.length === 0 ? (
         <NotesEmptyState />
       ) : (
-        notes.map((note) => (
-          <NoteCard key={note.id} note={note} onEdit={openEdit} onDelete={deleteNote} />
-        ))
+        <View style={styles.notesList}>
+          {notes.map((note) => (
+            <NoteCard 
+              key={note.id} 
+              note={note} 
+              onEdit={openEdit} 
+              onDelete={deleteNote} 
+              onToggleArchive={toggleArchive}
+              onTogglePin={togglePin}
+            />
+          ))}
+        </View>
       )}
 
-      {onResetOnboarding ? (
-        <AppButton title="Show onboarding again" variant="secondary" onPress={() => void onResetOnboarding()} />
-      ) : null}
+      <View style={styles.fabContainer}>
+        <AppButton title="Create a new note" onPress={openCreate} />
+      </View>
 
       <NoteEditor visible={editorVisible} initialNote={selectedNote} onClose={closeEditor} onSave={saveNote} />
     </Screen>
@@ -83,53 +126,57 @@ export function NotesScreen({ onResetOnboarding }: NotesScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  heroCard: {
-    backgroundColor: '#EEF7EC',
-    borderColor: '#D0E8CA',
-  },
-  heroRow: {
+  searchContainer: {
     flexDirection: 'row',
-    gap: theme.spacing.md,
     alignItems: 'center',
+    backgroundColor: '#F1F5F9', // Light gray background from design
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    height: 50,
+    marginTop: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
-  heroTextWrap: {
+  searchIcon: {
+    marginRight: 12,
+  },
+  searchInput: {
     flex: 1,
-    gap: theme.spacing.xs,
-  },
-  heroEyebrow: {
-    color: theme.colors.success,
-    fontWeight: theme.typography.weights.semibold,
-    fontSize: theme.typography.sizes.sm,
-  },
-  heroTitle: {
+    fontSize: theme.typography.sizes.md,
     color: theme.colors.text,
-    fontWeight: theme.typography.weights.bold,
-    fontSize: theme.typography.sizes.xl,
   },
-  heroText: {
-    color: theme.colors.mutedText,
-    lineHeight: 21,
-  },
-  heroBadge: {
-    width: 86,
-    height: 86,
-    borderRadius: 28,
-    backgroundColor: theme.colors.success,
+  controlsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: theme.spacing.sm,
+    marginBottom: theme.spacing.md,
   },
-  heroBadgeNumber: {
-    color: theme.colors.surface,
-    fontSize: 26,
+  sectionHeading: {
+    fontSize: theme.typography.sizes.lg,
     fontWeight: theme.typography.weights.bold,
+    color: theme.colors.text,
   },
-  heroBadgeLabel: {
-    color: '#D1FAE5',
-    fontSize: theme.typography.sizes.xs,
-    textAlign: 'center',
+  controlButtons: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  iconButton: {
+    padding: 4,
+  },
+  archiveToggle: {
+    padding: 4,
+  },
+  archiveToggleActive: {
+    // Optional indicator
+  },
+  notesList: {
+    gap: theme.spacing.sm,
+    paddingBottom: 80,
   },
   loaderWrap: {
     paddingVertical: theme.spacing.xxxl,
+    alignItems: 'center',
+  },
+  fabContainer: {
+    marginTop: theme.spacing.lg,
   },
 });
