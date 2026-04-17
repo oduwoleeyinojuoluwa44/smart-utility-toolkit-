@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "smart-utility-toolkit-mobile",
+    "name": "Smart Utility Toolkit",
     "slug": "smart-utility-toolkit-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,9 +13,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.teobrando.smartutilitytoolkit"
     },
     "android": {
+      "package": "com.teobrando.smartutilitytoolkit",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -25,6 +27,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "20e3b592-94bb-44b1-a4f5-a039be78f945"
+      }
+    },
+    "owner": "teobrando"
   }
 }
